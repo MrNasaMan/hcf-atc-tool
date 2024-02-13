@@ -1,7 +1,7 @@
 # Honolulu Control Facility ATC Tool
 
 An ATC tool developed for the Honolulu Control Facility using electron.js. 
-Currently sues vatsim metar api, data stream, and aviation api to get charts. 
+Currently uses vatsim metar api, data stream, and aviation api to get charts. 
 
 Using electron on first release, currently in proccess of updating procedures. 
 Package and package-lock not included, users will need to download all packages themselves and set up electron in the package.json. Documentation for electron can be found here: www.electronjs.org
