@@ -1,6 +1,8 @@
 # Honolulu Control Facility ATC Tool
 
 An ATC tool developed for the Honolulu Control Facility using electron.js. 
+Includes HCF Preffered Routes Search, Charts for HCF airports, and an IDS (Instrument Display System)
+
 Currently uses vatsim metar api, data stream, and aviation api to get charts. 
 
 Using electron on first release, currently in proccess of updating procedures. 
