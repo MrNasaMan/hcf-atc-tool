@@ -1,0 +1,375 @@
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  border-radius: 10px;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 10px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #313131;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.text-3xl {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  margin-left: 10px; 
+}
+
+.text-white {
+  color: #040404;
+  margin-left: 10px;
+}
+
+.search {
+  margin-top: 10px;
+}
+
+.input-box,
+.button {
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 10px; 
+}
+
+.input-box {
+  width: 150px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.button {
+  padding: 14px 20px;
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin-top: 5px;
+}
+
+.button:hover {
+  background-color: white;
+  color: black;
+}
+
+#products {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product {
+  flex: 0 0 calc(33.33% - 20px);
+  margin: 10px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#selectedFrom,
+#selectedTo {
+  width: 150px;
+  border-radius: 10px;
+}
+
+.black-text {
+  color: black;
+}
+
+.ids-page div{
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.ids-page table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+.ids-page td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.ids-page #phnl-label,
+.ids-page #phto-label,
+.ids-page #phko-label,
+.ids-page #phli-label,
+.ids-page #phog-label {
+  background-color: #808080;
+  color: #fff;
+}
+
+.ids-page #phnl-atis,
+.ids-page #phto-atis,
+.ids-page #phko-atis,
+.ids-page #phli-atis,
+.ids-page #phog-atis,
+.ids-page #phnl-info,
+.ids-page #phto-info,
+.ids-page #phko-info,
+.ids-page #phli-info,
+.ids-page #phog-info {
+  background-color: #fff;
+  color: #333;
+}
+
+.ids-page #phnl-atis,
+.ids-page #phto-atis,
+.ids-page #phko-atis,
+.ids-page #phli-atis,
+.ids-page #phog-atis {
+  font-size: 30px;
+}
+
+.ids-page #phnl-info,
+.ids-page #phto-info,
+.ids-page #phko-info,
+.ids-page #phli-info,
+.ids-page #phog-info {
+  font-size: 16px;
+}
+
+
+#products {
+  margin-top: 10px;
+}
+
+#searchResults {
+  margin-left: 20px; 
+}
+
+.product {
+  border: 3px solid black; 
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem; 
+  overflow: hidden; 
+}
+
+#searchResults > div {
+  border: 3px solid black; 
+  border-radius: 10px; 
+  padding: 15px;
+  margin-top: 10px; 
+  overflow: hidden; 
+}
+.search2 {
+  text-align: left;
+  margin: 10px;
+}
+
+.search2 h1 {
+  font-size: 48px;
+  color: #040404;
+}
+
+.filter2 {
+  margin-top: 10px;
+}
+
+.filter2 label {
+  margin-right: 10px;
+}
+
+.filter2 select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.button2 {
+  padding: 10px 15px;
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.button2:hover {
+  background-color: white;
+  color: black;
+}
+#pdfWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; 
+}
+
+#exit-button {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  padding: 10px 20px;
+  background-color: #323232;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#exit-button:hover {
+  background-color: #8a8989;
+}
+
+#pdfEmbed {
+  width: 80vw;
+  height: 80vh;
+  max-width: 800px; 
+  max-height: 600px; 
+}
+.dark-mode {
+  background-color: #222;
+  color: #fff;
+}
+
+#darkModeToggle {
+  position: fixed;
+  top: 5px;
+  right: 10px;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#darkModeToggle:hover {
+  background-color: #555;
+}
+
+.dark-mode body {
+  background-color: #373636;
+  color: #fff;
+}
+
+.dark-mode .topnav {
+  background-color: #373636;
+}
+
+.dark-mode .topnav a {
+  color: #ccc;
+}
+
+.dark-mode .topnav a:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark-mode .topnav a.active {
+  background-color: #4d4c4c;
+  color: #fff;
+}
+
+.dark-mode .button2{
+  border: 2px solid black;
+}
+.dark-mode .button{
+  border: 2px solid black;
+}
+
+.dark-mode .text-white {
+  color: #ffffff;
+}
+
+.dark-mode .search2 h1 {
+  color: #ffffff;
+}
+.dark-mode .ids-page #phnl-atis,
+.dark-mode .ids-page #phto-atis,
+.dark-mode .ids-page #phko-atis,
+.dark-mode .ids-page #phli-atis,
+.dark-mode .ids-page #phog-atis,
+.dark-mode .ids-page #phnl-info,
+.dark-mode .ids-page #phto-info,
+.dark-mode .ids-page #phko-info,
+.dark-mode .ids-page #phli-info,
+.dark-mode .ids-page #phog-info {
+  background-color: #404040;
+  color: #f5f5f5;
+}
+
+.dark-mode .filter2 select{
+  background-color: #404040;
+  color: #ffffff;
+}
+
+.dark-mode #selectedFrom,
+.dark-mode #selectedTo {
+  background-color: #404040;
+  color: #ffffff;
+}
+
+.dark-mode .chart-popup-content chartbutton {
+  background-color: #404040;
+  color: #fff
+}
+
+.chart-popup-content chartbutton {
+  display: inline-block;
+  margin: 5px; 
+  padding: 10px;
+  background-color: #ffffff;
+  color: #030303;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.chart-popup-content{
+  margin: 10px; 
+}

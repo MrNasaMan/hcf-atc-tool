@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honolulu Control Facility ATC Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ysabeau&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"/>
+    <script src="prefscript.js"></script>
+    <script defer src="darkmode.js"></script>
+
+</head>
+<body>
+  <div class="topnav" id="topnavv">
+    <a href="#home" class="active">Routes</a>
+    <a href="AirportDiagram.html">Charts</a>
+    <a href="ids.html">IDS</a>
+    <a href="javascript:void(0);" class="icon" onclick="hamburger()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <div class="mt-10">
+    <h1 class="text-3xl text-white">Honolulu Control Facility Preferred Routing</h1>
+    <div class="search mt-10">
+      <div class="flex items-center">
+        <div class="relative">
+          <label class="block text-sm font-medium text-white">
+            From:
+          </label>
+          <div class="mt-1 relative rounded-md shadow-sm">
+            <input
+              id="selectedFrom"
+              type="text"
+              class="input-box focus:ring-indigo-500 focus:border-indigo-500 pl-3 pr-4 text-black border-gray-300 rounded-md w-40 sm:w-48 h-12"
+              placeholder="Departure ICAO"
+            />
+          </div>
+        </div>
+        <div class="relative ml-4"> 
+          <label class="block text-sm font-medium text-white">
+            To:
+          </label>
+          <div class="mt-1 relative rounded-md shadow-sm">
+            <input
+              id="selectedTo"
+              type="text"
+              class="input-box focus:ring-indigo-500 focus:border-indigo-500 pl-3 pr-4 text-black border-gray-300 rounded-md w-40 sm:w-48 h-12"
+              placeholder="Arrival ICAO"
+            />
+          </div>
+        </div>
+
+        <button
+          onclick="search()"
+          class="button h-12 px-4 mt-6 border-2 border-white rounded-md"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+    <div id="products" class="mt-5">
+      <div id="noResult" style="display: none;">
+        <h1 class="black-text">No result!</h1>
+      </div>
+      <div id="searchResults"></div>
+    </div>
+  </div>
+  <button id="darkModeToggle">Toggle Dark Mode</button>
+</body>
+</html>

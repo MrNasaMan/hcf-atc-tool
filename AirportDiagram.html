@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <script src="aptscript.js"></script>
+    <script defer src="darkmode.js"></script>
+    <title>Honolulu Control Facility ATC Tool</title>
+
+</head>
+<body>
+    <div class="topnav" id="topnavv">
+        <a href="index.html">Routes</a>
+        <a href="AirportDiagram.html" class="active">Charts</a>
+        <a href="ids.html">IDS</a>
+        <a href="javascript:void(0);" class="icon" onclick="hamburger()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    <div class="search2">
+        <h1>Honolulu Control Facility Charts</h1>
+        <div class="filter2">
+            <label>
+                <span>Airport:</span>
+                <select name="apt" id="apt" onchange="apt()">
+                </select>
+            </label>
+        </div>
+    </div>
+    <div id="products"></div>
+    <div id="pdfContainer"></div> 
+    <button id="darkModeToggle">Toggle Dark Mode</button>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>

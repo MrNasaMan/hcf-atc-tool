@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honolulu Control Facility ATC Tool</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topnav" id="topnavv">
+    <a href="index.html">Routes</a>
+    <a href="AirportDiagram.html">Charts</a>
+    <a href="ids.html" class="active">IDS</a>
+    <a href="javascript:void(0);" class="icon" onclick="hamburger()">
+        <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <div class="ids-page">
+  <table>
+    <tr>
+      <td>
+        <div id="phnl-label">PHNL</div>
+        <div id="phnl-atis"></div>
+      </td>
+      <td>
+        <div id="phnl-info"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div id="phto-label">PHTO</div>
+        <div id="phto-atis"></div>
+      </td>
+      <td>
+        <div id="phto-info"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div id="phko-label">PHKO</div>
+        <div id="phko-atis"></div>
+      </td>
+      <td>
+        <div id="phko-info"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div id="phli-label">PHLI</div>
+        <div id="phli-atis"></div>
+      </td>
+      <td>
+        <div id="phli-info"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div id="phog-label">PHOG</div>
+        <div id="phog-atis"></div>
+      </td>
+      <td>
+        <div id="phog-info"></div>
+      </td>
+    </tr>
+  </table>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="ids.js"></script>
+  <script defer src="darkmode.js"></script>
+  <button id="darkModeToggle">Toggle Dark Mode</button>
+</body>
+</html>
