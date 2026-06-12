@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honolulu Control Facility ATC Tool</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="aptscript.js"></script>
+    <script defer src="darkmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+</head>
+<body class="sop-layout-container">
+
+    <div class="topnav" id="topnavv">
+        <a href="index.html">Routes</a>
+        <a href="AirportDiagram.html">Charts</a>
+        <a href="ids.html">IDS</a>
+        <a href="sop.html">SOPs</a>
+        <a href="type.html">A/C Type</a>
+        <a href="airline.html" class="active">Airlines</a>
+        <a href="javascript:void(0);" class="icon" onclick="hamburger()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+    <div class="sop-selector-container">
+        <label for="search"><b>&nbsp&nbsp&nbspSearch:</b></label>
+        <input type="text" id="search" placeholder="Enter 3-Letter Code, Name, etc..." disabled 
+               style="padding: 5px; margin-left: 10px; width: 250px;">
+        <span id="status" style="margin-left: 15px; font-size: 0.8rem; opacity: 0.8;">Initializing...</span>
+    </div>
+
+    <div class="sop-frame" style="overflow-y: auto; overflow-x: hidden; height: 75vh; border: 1px solid rgba(128,128,128,0.3);">
+        <div id="output">
+            <p style="padding: 20px;">Loading data source...</p>
+        </div>
+    </div>
+
+    <button id="darkModeToggle">Toggle Dark Mode</button>
+
+    <script>
+        const csvFileName = 'Airlines.csv';
+        let masterData = [];
+        let headers = [];
+        let debounceTimer;
+
+        const searchInput = document.getElementById('search');
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+
+        Papa.parse(csvFileName, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            worker: false, 
+            complete: function(results) {
+                if (results.data && results.data.length > 0) {
+                    masterData = results.data;
+                    headers = Object.keys(masterData[0]);
+                    status.textContent = `Results: ${masterData.length} rows`;
+                    searchInput.disabled = false;
+                    renderTable(masterData.slice(0, 50)); 
+                }
+            },
+            error: function(err) {
+                status.textContent = "Error: Connection Failed";
+            }
+        });
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(performSearch, 150);
+        });
+
+        function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            if (!query) {
+                renderTable(masterData.slice(0, 50));
+                return;
+            }
+
+            const filtered = [];
+            for (let i = 0; i < masterData.length; i++) {
+                const row = masterData[i];
+                let match = false;
+                for (const key in row) {
+                    if (String(row[key]).toLowerCase().includes(query)) {
+                        match = true;
+                        break;
+                    }
+                }
+                if (match) {
+                    filtered.push(row);
+                    if (filtered.length >= 150) break; 
+                }
+            }
+            renderTable(filtered);
+        }
+
+        function renderTable(data) {
+            if (data.length === 0) {
+                output.innerHTML = "<p style='padding:20px;'>No records found.</p>";
+                return;
+            }
+
+            let html = '<table style="width:100%; table-layout: fixed; border-collapse: collapse; background-color: transparent; color: inherit;">';
+            html += '<thead><tr style="background-color: rgba(128, 128, 128, 0.1);">';
+            
+            const colWidth = 100 / headers.length;
+            
+            headers.forEach(h => {
+                html += `<th style="width:${colWidth}%; text-align:left; padding:10px; border-bottom:2px solid rgba(128,128,128,0.3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${h}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            for (let i = 0; i < data.length; i++) {
+                html += '<tr>';
+                headers.forEach(h => {
+                    html += `<td style="padding:10px; border-bottom:1px solid rgba(128,128,128,0.2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${data[i][h] || ''}</td>`;
+                });
+                html += '</tr>';
+            }
+            html += '</tbody></table>';
+            output.innerHTML = html;
+        }
+    </script>
+
+</body>
+</html>

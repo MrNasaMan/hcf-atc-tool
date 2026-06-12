@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <script src="aptscript.js"></script>
+    <script defer src="darkmode.js"></script>
+    <title>Honolulu Control Facility ATC Tool</title>
+</head>
+<body class="sop-layout-container">
+
+    <div class="topnav" id="topnavv">
+        <a href="index.html">Routes</a>
+        <a href="AirportDiagram.html">Charts</a>
+        <a href="ids.html">IDS</a>
+        <a href="sop.html" class="active">SOPs</a>
+        <a href="type.html">A/C Type</a>
+        <a href="airline.html">Airlines</a>
+        <a href="javascript:void(0);" class="icon" onclick="hamburger()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+    <div class="sop-selector-container">
+        <label for="sop-dropdown">  <b>Facility SOP:</b></label>
+        <select id="sop-dropdown" onchange="changeSOP(this.value)">
+            <option value="https://sops.vhcf.net/airports/Honolulu/info/">Honolulu</option>
+            <option value="https://sops.vhcf.net/airports/Hilo/info/">Hilo (ITO)</option>
+            <option value="https://sops.vhcf.net/airports/Kahului/info/">Kahului (OGG)</option>
+            <option value="https://sops.vhcf.net/airports/Kalaeloa/info/">Kalaeloa (JRF)</option>
+            <option value="https://sops.vhcf.net/airports/Kona/info/">Kona (KOA)</option>
+            <option value="https://sops.vhcf.net/airports/Lihu%27e/info/">Lihu'e (LIH)</option>
+            <option value="https://sops.vhcf.net/airports/Molokai/info/">Molokai (MKK)</option>
+        </select>
+    </div>
+
+    <iframe 
+        id="sop-viewport"
+        name="sop-viewport" 
+        class="sop-frame"
+        src="https://sops.vhcf.net/airports/Honolulu/info/" 
+        title="SOP Content">
+    </iframe>
+
+    <button id="darkModeToggle">Toggle Dark Mode</button>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <script>
+        function changeSOP(url) {
+            const iframe = document.getElementById('sop-viewport');
+            if (iframe) {
+                iframe.src = url;
+            }
+        }
+    </script>
+
+</body>
+</html>
