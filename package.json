@@ -2,7 +2,7 @@
   "name": "hcf-atc-tool",
   "version": "3.0.4",
   "description": "Honolulu Control Facility ATC Tool",
-  "author": "MrNasaMan",
+  "author": "Davit Karapetyan",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
