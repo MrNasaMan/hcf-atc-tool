@@ -35,9 +35,6 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
     },
-    "portable": {
-      "artifactName": "${productName} Portable.${ext}"
-    },
     "publish": {
       "provider": "github",
       "owner": "MrNasaMan",
