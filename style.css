@@ -1,0 +1,583 @@
+/* ==========================================================================
+   CSS VARIABLES & MONOCHROMATIC GREYSCALE DESIGN TOKENS
+   ========================================================================== */
+:root {
+  /* Light Mode Greyscale */
+  --bg-app: #f5f5f5;
+  --bg-surface: #ffffff;
+  --bg-elevated: #eaeaea;
+  --bg-hover: #e0e0e0;
+  
+  --border-subtle: #d6d6d6;
+  --border-strong: #9e9e9e;
+  
+  --text-primary: #171717;
+  --text-secondary: #525252;
+  --text-muted: #737373;
+  
+  --accent: #262626;           /* Deep Charcoal Accent */
+  --accent-hover: #000000;
+  --accent-text: #ffffff;
+  
+  --atis-bg: #e5e5e5;
+  --atis-text: #171717;
+  --table-border: #d4d4d4;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.12);
+  
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+}
+
+/* Dark Mode Greyscale (Charcoal / Off-Black Hardware Aesthetic) */
+body.dark-mode,
+.dark-mode {
+  --bg-app: #121212;          /* Deep Matte Black */
+  --bg-surface: #1e1e1e;      /* Neutral Charcoal Surface */
+  --bg-elevated: #292929;     /* Elevated Card Layer */
+  --bg-hover: #383838;
+  
+  --border-subtle: #2d2d2d;
+  --border-strong: #4a4a4a;
+  
+  --text-primary: #f5f5f5;
+  --text-secondary: #b3b3b3;
+  --text-muted: #808080;
+  
+  --accent: #404040;          /* Mid-Grey Interactive Accent */
+  --accent-hover: #525252;
+  --accent-text: #ffffff;
+  
+  --atis-bg: #292929;
+  --atis-text: #f5f5f5;
+  --table-border: #2d2d2d;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
+}
+
+/* ==========================================================================
+   GLOBAL RESETS & APPLICATION SHELL
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  transition: background-color 0.18s ease, color 0.18s ease;
+  overflow-x: hidden;
+}
+
+.sop-layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.spa-tab-content {
+  width: 100%;
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   NAVIGATION BAR
+   ========================================================================== */
+.topnav {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 6px 12px;
+  gap: 6px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  z-index: 100;
+}
+
+.topnav a {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease-in-out;
+  letter-spacing: 0.02em;
+}
+
+.topnav a:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.topnav a.active {
+  background-color: var(--accent);
+  color: var(--accent-text);
+  box-shadow: var(--shadow-sm);
+}
+
+body.dark-mode .topnav a.active {
+  border: 1px solid var(--border-strong);
+}
+
+.topnav .icon {
+  display: none;
+}
+
+/* Fixed Dark Mode Toggle Button */
+#darkModeToggle {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.15s ease;
+  z-index: 999;
+}
+
+#darkModeToggle:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--text-primary);
+}
+
+/* ==========================================================================
+   FORM CONTROLS & INPUTS
+   ========================================================================== */
+.input-box,
+input[type="text"],
+input[type="number"],
+select {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 9px 12px;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.18s ease;
+}
+
+.input-box:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.25);
+}
+
+.button,
+.button2 {
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 9px 18px;
+  background-color: var(--accent);
+  color: var(--accent-text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover,
+.button2:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Secondary Action / Filter Bar Containers */
+.filter2,
+.sop-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & HEADINGS
+   ========================================================================== */
+.text-3xl,
+.search2 h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 10px 0 15px 0;
+}
+
+.text-white {
+  color: var(--text-primary);
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* ==========================================================================
+   ROUTE RESULTS & PRODUCT CARDS
+   ========================================================================== */
+/* Route Cards Layout */
+.route-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.route-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.route-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+.route-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+.route-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.route-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.route-row {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.route-row .label {
+  min-width: 95px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  padding-top: 2px;
+}
+
+.route-row .value {
+  color: var(--text-primary);
+  flex-grow: 1;
+}
+
+.route-row .route-code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+/* ==========================================================================
+   IDS DISPLAY PAGE
+   ========================================================================== */
+.ids-page {
+  padding: 15px;
+}
+
+.ids-page table {
+  width: 90%;
+  max-width: 1000px;
+  margin: 15px auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.ids-page td {
+  padding: 14px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--table-border);
+  vertical-align: middle;
+}
+
+.ids-page tr:last-child td {
+  border-bottom: none;
+}
+
+.ids-page [id$="-label"] {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.ids-page [id$="-atis"] {
+  display: inline-block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-family: monospace;
+  background-color: var(--atis-bg);
+  color: var(--atis-text);
+  padding: 2px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+}
+
+.ids-page [id$="-info"] {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   DATA TABLES (AIRCRAFT TYPES & AIRLINES)
+   ========================================================================== */
+#typeOutput table,
+#airOutput table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg-surface);
+  font-size: 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+#typeOutput th,
+#airOutput th {
+  background-color: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+#typeOutput td,
+#airOutput td {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+#typeOutput tr:hover td,
+#airOutput tr:hover td {
+  background-color: var(--bg-hover);
+}
+
+/* ==========================================================================
+   CHARTS VIEWER & PDF MODAL
+   ========================================================================== */
+.chart-popup-content {
+  margin: 15px 0;
+}
+
+.chart-popup-content h3 {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 14px 0 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 4px;
+}
+
+#pdfWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#exit-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  padding: 8px 16px;
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  z-index: 1001;
+}
+
+#exit-button:hover {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+#pdfEmbed {
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-strong);
+}
+
+/* ==========================================================================
+   SOP IFRAME VIEWPORT
+   ========================================================================== */
+.sop-frame {
+  flex-grow: 1;
+  width: 100%;
+  border: none;
+  background-color: #ffffff;
+}
+/* ==========================================================================
+   TMU DASHBOARD COMPONENT STYLES
+   ========================================================================== */
+.tmu-filter-btn {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tmu-filter-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.tmu-filter-btn.active {
+  background-color: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--border-strong);
+}
+
+/* Facility Demand Badges */
+.tmu-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.tmu-pill b {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  border-right: 1px solid var(--border-subtle);
+  padding-right: 6px;
+}
+
+.tmu-pill span {
+  color: var(--text-muted);
+}
+
+.tmu-pill strong {
+  color: var(--text-primary);
+}
+
+/* TMU Table Formatting */
+#tmuTableBody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color 0.1s ease;
+}
+
+#tmuTableBody tr:hover {
+  background-color: var(--bg-hover);
+}
+
+#tmuTableBody td {
+  padding: 9px 12px;
+  vertical-align: middle;
+}
+
+.tmu-type-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+
+.tmu-type-tag.inbound {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.tmu-type-tag.inter-island {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}

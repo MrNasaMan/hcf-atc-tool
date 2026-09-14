@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honolulu Control Facility ATC Tool</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- Logic Scripts -->
+  <script defer src="darkmode.js"></script>
+  <script src="prefscript.js"></script>
+  <script src="aptscript.js"></script>
+  <script src="calc.js"></script>
+  <script src="ids.js"></script>
+  <script src="tmu.js"></script>
+</head>
+<body class="sop-layout-container">
+
+  <!-- Universal Sticky Topnav -->
+  <div class="topnav" id="topnavv">
+    <a href="javascript:void(0)" class="tab-link active" onclick="showTab('routesTab', this)">Routes</a>
+    <a href="javascript:void(0)" class="tab-link" onclick="showTab('chartsTab', this)">Charts</a>
+    <a href="javascript:void(0)" class="tab-link" onclick="showTab('idsTab', this)">IDS</a>
+    <a href="javascript:void(0)" class="tab-link" onclick="showTab('sopTab', this)">SOPs</a>
+    <a href="javascript:void(0)" class="tab-link" onclick="showTab('typesTab', this)">A/C Type</a>
+    <a href="javascript:void(0)" class="tab-link" onclick="showTab('airlinesTab', this)">Airlines</a>
+    <a href="javascript:void(0)" class="tab-link" onclick="showTab('calcTab', this)">Enroute</a>
+    <a href="javascript:void(0)" class="tab-link" onclick="showTab('tmuTab', this); startTMUSync();">Live Traffic/TMU</a>
+  </div>
+
+  <!-- TAB 1: ROUTES -->
+  <div id="routesTab" class="spa-tab-content" style="display: block; padding: 15px; overflow-y: auto;">
+    <h1 class="text-3xl text-white">Preferred Routing Search</h1>
+    <div class="search">
+      <input id="selectedFrom" type="text" class="input-box" placeholder="Departure ICAO" />
+      <input id="selectedTo" type="text" class="input-box" placeholder="Arrival ICAO" />
+      <button onclick="search()" class="button"><b>Search</b></button>
+    </div>
+    <div id="searchResults" style="margin-top: 15px;"></div>
+  </div>
+
+  <!-- TAB 2: CHARTS (Free-text ICAO Lookup) -->
+  <div id="chartsTab" class="spa-tab-content" style="display: none; padding: 15px; overflow-y: auto;">
+    <div class="search2">
+      <h1>Airport Charts</h1>
+      <div class="filter2">
+        <label><b>Airport ICAO:</b></label>
+        <input type="text" id="aptInput" class="input-box" placeholder="e.g. PHNL, PHOG, PBKH" 
+               onkeydown="if(event.key==='Enter') loadCharts()" style="text-transform: uppercase;" />
+        <button class="button2" onclick="loadCharts()">Fetch Charts</button>
+      </div>
+    </div>
+    <div id="chartsContainer" class="chart-popup-content"></div>
+    <div id="pdfContainer"></div>
+  </div>
+
+  <!-- TAB 3: IDS -->
+  <div id="idsTab" class="spa-tab-content ids-page" style="display: none; overflow-y: auto;">
+    <table>
+      <tr><td><div id="phnl-label">PHNL</div><div id="phnl-atis"></div></td><td><div id="phnl-info"></div></td></tr>
+      <tr><td><div id="phog-label">PHOG</div><div id="phog-atis"></div></td><td><div id="phog-info"></div></td></tr>
+      <tr><td><div id="phto-label">PHTO</div><div id="phto-atis"></div></td><td><div id="phto-info"></div></td></tr>
+      <tr><td><div id="phko-label">PHKO</div><div id="phko-atis"></div></td><td><div id="phko-info"></div></td></tr>
+      <tr><td><div id="phli-label">PHLI</div><div id="phli-atis"></div></td><td><div id="phli-info"></div></td></tr>
+    </table>
+  </div>
+
+  <!-- TAB 4: SOPS -->
+  <div id="sopTab" class="spa-tab-content" style="display: none; height: calc(100vh - 55px); flex-direction: column;">
+    <div class="sop-selector-container" style="padding: 10px;">
+      <label for="sop-dropdown"><b>Facility SOP:</b></label>
+      <select id="sop-dropdown" onchange="document.getElementById('sop-viewport').src = this.value">
+        <option value="https://sops.vhcf.net/airports/Honolulu/info/">Honolulu</option>
+        <option value="https://sops.vhcf.net/airports/Hilo/info/">Hilo (ITO)</option>
+        <option value="https://sops.vhcf.net/airports/Kahului/info/">Kahului (OGG)</option>
+        <option value="https://sops.vhcf.net/airports/Kalaeloa/info/">Kalaeloa (JRF)</option>
+        <option value="https://sops.vhcf.net/airports/Kona/info/">Kona (KOA)</option>
+        <option value="https://sops.vhcf.net/airports/Lihu%27e/info/">Lihu'e (LIH)</option>
+        <option value="https://sops.vhcf.net/airports/Molokai/info/">Molokai (MKK)</option>
+      </select>
+    </div>
+    <iframe id="sop-viewport" class="sop-frame" src="https://sops.vhcf.net/airports/Honolulu/info/" title="SOP"></iframe>
+  </div>
+
+  <!-- TAB 5: AIRCRAFT TYPE -->
+  <div id="typesTab" class="spa-tab-content" style="display: none; padding: 15px; overflow-y: auto;">
+    <div class="sop-selector-container">
+      <label for="typeSearch"><b>Search A/C Type:</b></label>
+      <input type="text" id="typeSearch" placeholder="Type, Designator, etc..." class="input-box" style="width: 250px;" />
+      <span id="typeStatus" style="font-size: 0.85rem; opacity: 0.8;">Loading CSV...</span>
+    </div>
+    <div id="typeOutput" style="margin-top: 10px;"></div>
+  </div>
+
+  <!-- TAB 6: AIRLINES -->
+  <div id="airlinesTab" class="spa-tab-content" style="display: none; padding: 15px; overflow-y: auto;">
+    <div class="sop-selector-container">
+      <label for="airSearch"><b>Search Airline:</b></label>
+      <input type="text" id="airSearch" placeholder="3-Letter Code, Name, etc..." class="input-box" style="width: 250px;" />
+      <span id="airStatus" style="font-size: 0.85rem; opacity: 0.8;">Loading CSV...</span>
+    </div>
+    <div id="airOutput" style="margin-top: 10px;"></div>
+  </div>
+
+  <!-- TAB 7: ENROUTE, OCEANIC & TOD CALCULATOR -->
+  <div id="calcTab" class="spa-tab-content" style="display: none; padding: 20px; max-width: 850px; overflow-y: auto;">
+    
+    <!-- SECTION 1: OCEANIC / ENROUTE SEQUENCING & SPACING -->
+    <h2 style="margin-top: 0;">Enroute Spacing Calculator</h2>
+    <p style="font-size: 0.9rem; opacity: 0.8;">Calculates closure rate, time-to-loss of separation, and oceanic Miles-in-Trail (MIT) time equivalence.</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+      <div>
+        <label><b>Lead Aircraft Speed (Mach or Kts):</b></label><br>
+        <input type="number" step="any" id="leadSpeed" class="input-box" placeholder="e.g. .82 or 460" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+      <div>
+        <label><b>Trail Aircraft Speed (Mach or Kts):</b></label><br>
+        <input type="number" step="any" id="trailSpeed" class="input-box" placeholder="e.g. .85 or 490" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+      <div>
+        <label><b>Current Separation (NM):</b></label><br>
+        <input type="number" step="any" id="currentDist" class="input-box" placeholder="e.g. 45" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+      <div>
+        <label><b>Required / Target Spacing (NM):</b></label><br>
+        <input type="number" step="any" id="targetDist" class="input-box" placeholder="e.g. 20 (or 50 Oceanic)" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+    </div>
+
+    <button class="button" onclick="calculateSpacing()" style="margin-left: 0; margin-top: 15px;">Compute Spacing</button>
+    
+    <div id="calcResult" style="margin-top: 15px; padding: 15px; border-radius: 8px; border: 1px solid rgba(128,128,128,0.3); background-color: rgba(128,128,128,0.05);">
+      Enter parameters and click "Compute Spacing".
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid rgba(128,128,128,0.3); margin: 30px 0;">
+
+    <!-- SECTION 2: TOP OF DESCENT (TOD) -->
+    <h2>Top of Descent (TOD) Calculator</h2>
+    <p style="font-size: 0.9rem; opacity: 0.8;">Calculate required distance, vertical speed (FPM), and time to reach crossing restrictions or sector boundaries.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 15px;">
+      <div>
+        <label><b>Current Altitude (ft):</b></label><br>
+        <input type="number" step="1000" id="todCurrentAlt" class="input-box" placeholder="e.g. 36000" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+      <div>
+        <label><b>Target Altitude (ft):</b></label><br>
+        <input type="number" step="1000" id="todTargetAlt" class="input-box" placeholder="e.g. 10000" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+      <div>
+        <label><b>Groundspeed (kts):</b></label><br>
+        <input type="number" id="todGS" class="input-box" placeholder="e.g. 420" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+      <div>
+        <label><b>Descent Angle (°):</b></label><br>
+        <input type="number" step="0.1" id="todAngle" class="input-box" value="3.0" style="width: 90%; margin-left: 0; margin-top: 5px;">
+      </div>
+    </div>
+
+    <button class="button" onclick="calculateTOD()" style="margin-left: 0; margin-top: 15px;">Compute TOD</button>
+
+    <div id="todResult" style="margin-top: 15px; margin-bottom: 20px; padding: 15px; border-radius: 8px; border: 1px solid rgba(128,128,128,0.3); background-color: rgba(128,128,128,0.05);">
+      Enter altitudes and groundspeed to calculate descent profile.
+    </div>
+  </div>
+  <!-- TAB: TMU / VATSIM LIVE MONITOR -->
+  <div id="tmuTab" class="spa-tab-content" style="display: none; padding: 15px; overflow-y: auto;">
+    
+    <!-- Top Header Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+      <div>
+        <h1 class="text-3xl" style="margin: 0;">Traffic Management Unit (TMU)</h1>
+        <span id="tmuStatus" style="font-size: 0.8rem; color: var(--text-muted); font-family: monospace;">Initializing live radar feed...</span>
+      </div>
+      
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <span id="tmuTrafficCount" class="route-badge">0 Flights</span>
+        <button class="tmu-filter-btn active" onclick="setTMUFilter('ALL', this)">All</button>
+        <button class="tmu-filter-btn" onclick="setTMUFilter('ARR', this)">Inbounds</button>
+        <button class="tmu-filter-btn" onclick="setTMUFilter('DEP', this)">Outbounds</button>
+        <button class="tmu-filter-btn" onclick="setTMUFilter('INTER', this)">Inter-Island</button>
+        <button class="button2" onclick="fetchVatsimTraffic()" style="padding: 6px 12px; font-size: 0.78rem;">Refresh</button>
+      </div>
+    </div>
+
+    <!-- Facility Airport Demand Matrix -->
+    <div style="margin: 15px 0 10px 0;">
+      <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Airfield Load & Demand</span>
+      <div id="tmuDemandPills" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;"></div>
+    </div>
+
+    <!-- Main Live Traffic Sequence Table -->
+    <div style="margin-top: 15px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; background-color: var(--bg-surface);">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <thead style="background-color: var(--bg-elevated); border-bottom: 1px solid var(--border-strong);">
+          <tr>
+            <th style="padding: 10px 12px;">Callsign</th>
+            <th style="padding: 10px 12px;">Type</th>
+            <th style="padding: 10px 12px;">City Pair</th>
+            <th style="padding: 10px 12px;">Alt</th>
+            <th style="padding: 10px 12px;">GS</th>
+            <th style="padding: 10px 12px;">Squawk</th>
+            <th style="padding: 10px 12px;">Dist Rem</th>
+            <th style="padding: 10px 12px;">ETA</th>
+            <th style="padding: 10px 12px;">Flow</th>
+          </tr>
+        </thead>
+        <tbody id="tmuTableBody">
+          <tr><td colspan="9" style="text-align: center; padding: 25px; color: var(--text-muted);">Awaiting live network snapshot...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <button id="darkModeToggle">Toggle Dark Mode</button>
+
+  <!-- SPA Router & Background CSV Data Loader -->
+  <script>
+    // Tab Router
+    function showTab(tabId, el) {
+      document.querySelectorAll('.spa-tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      document.querySelectorAll('.tab-link').forEach(link => {
+        link.classList.remove('active');
+      });
+
+      const selected = document.getElementById(tabId);
+      selected.style.display = tabId === 'sopTab' ? 'flex' : 'block';
+      el.classList.add('active');
+    }
+
+    // In-Memory Data Store for Aircraft Types & Airlines
+    let typeData = [], typeHeaders = [];
+    let airData = [], airHeaders = [];
+
+    // Parse typelist.csv once on boot
+    Papa.parse('typelist.csv', {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        if (results.data && results.data.length > 0) {
+          typeData = results.data;
+          typeHeaders = Object.keys(typeData[0]);
+          document.getElementById('typeStatus').textContent = `${typeData.length} records ready`;
+          renderTable(typeData.slice(0, 50), typeHeaders, 'typeOutput');
+        }
+      }
+    });
+
+    // Parse Airlines.csv once on boot
+    Papa.parse('Airlines.csv', {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        if (results.data && results.data.length > 0) {
+          airData = results.data;
+          airHeaders = Object.keys(airData[0]);
+          document.getElementById('airStatus').textContent = `${airData.length} records ready`;
+          renderTable(airData.slice(0, 50), airHeaders, 'airOutput');
+        }
+      }
+    });
+
+    // Live filtering for both datasets
+    function setupFilter(inputId, dataGetter, headersGetter, outputId) {
+      let timer;
+      document.getElementById(inputId).addEventListener('input', (e) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          const query = e.target.value.toLowerCase().trim();
+          const master = dataGetter();
+          const headers = headersGetter();
+          if (!query) {
+            renderTable(master.slice(0, 50), headers, outputId);
+            return;
+          }
+          const matches = [];
+          for (let i = 0; i < master.length; i++) {
+            const row = master[i];
+            let found = false;
+            for (const key in row) {
+              if (String(row[key]).toLowerCase().includes(query)) {
+                found = true;
+                break;
+              }
+            }
+            if (found) {
+              matches.push(row);
+              if (matches.length >= 100) break;
+            }
+          }
+          renderTable(matches, headers, outputId);
+        }, 120);
+      });
+    }
+
+    function renderTable(rows, headers, outputId) {
+      const container = document.getElementById(outputId);
+      if (rows.length === 0) {
+        container.innerHTML = "<p style='padding: 10px;'>No records found.</p>";
+        return;
+      }
+      const colWidth = 100 / headers.length;
+      let html = '<table style="width:100%; border-collapse: collapse;"><thead><tr>';
+      headers.forEach(h => html += `<th style="width:${colWidth}%; text-align:left; padding:8px; border-bottom:2px solid rgba(128,128,128,0.4);">${h}</th>`);
+      html += '</tr></thead><tbody>';
+      rows.forEach(r => {
+        html += '<tr>';
+        headers.forEach(h => html += `<td style="padding:8px; border-bottom:1px solid rgba(128,128,128,0.2);">${r[h] || ''}</td>`);
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    setupFilter('typeSearch', () => typeData, () => typeHeaders, 'typeOutput');
+    setupFilter('airSearch', () => airData, () => airHeaders, 'airOutput');
+  </script>
+</body>
+</html>
