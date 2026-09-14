@@ -24,9 +24,11 @@
     ],
     "win": {
       "target": ["nsis", "portable"],
-      "icon": "logo.png"
+      "icon": "logo.png",
+      "artifactName": "${productName} ${target}.${ext}"
     },
     "nsis": {
+      "artifactName": "${productName} Setup.${ext}",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
