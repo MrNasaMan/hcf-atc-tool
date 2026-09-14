@@ -1,6 +1,6 @@
 {
   "name": "hcf-atc-tool",
-  "version": "3.0.2",
+  "version": "3.0.4",
   "description": "Honolulu Control Facility ATC Tool",
   "author": "MrNasaMan",
   "main": "main.js",
