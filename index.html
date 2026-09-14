@@ -18,6 +18,7 @@
   <script src="calc.js"></script>
   <script src="ids.js"></script>
   <script src="tmu.js"></script>
+  <div id="zulu-clock" class="zulu-clock">00:00:00 Z</div>
 </head>
 <body class="sop-layout-container">
 
@@ -237,6 +238,21 @@
       selected.style.display = tabId === 'sopTab' ? 'flex' : 'block';
       el.classList.add('active');
     }
+    function updateZuluClock() {
+  const now = new Date();
+  const hours = String(now.getUTCHours()).padStart(2, '0');
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+
+  const clockElement = document.getElementById('zulu-clock');
+  if (clockElement) {
+    clockElement.textContent = `${hours}:${minutes}:${seconds} Z`;
+  }
+}
+
+// Start interval and execute immediately
+setInterval(updateZuluClock, 1000);
+updateZuluClock();
 
     // In-Memory Data Store for Aircraft Types & Airlines
     let typeData = [], typeHeaders = [];
